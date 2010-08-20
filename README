@@ -1,0 +1,26 @@
+*ttagecho.txt*      Show current tag information (echo area or balloon)
+
+This plugin is similar to echofunc (vimscript #1735) to which it owes 
+much inspiration and two lines of code. It displays some information 
+about the tag under the cursor or mouse pointer either in the echo area 
+or as balloon help (see |g:ttagecho_balloon_patterns|). If there are 
+more than one tags that match, you can loop through the tags by invoking 
+the respective commands repeatedly.
+
+If hookcursormoved (vimscript #2037, version >= 0.4) is installed, for 
+certain filetypes (see |g:ttagecho_parentheses_patterns|) it will 
+display the information in the echo area also if the cursor moves over a 
+round parenthesis.
+
+If you don't like the default format for the tags, you can define the 
+function TTagechoFormat_{&filetype}(a:tag) that should return some nicely 
+formatted information.
+
+
+-----------------------------------------------------------------------
+
+Status:  Works for me (there may be some minor quirks)
+Dependencies: hookcursormoved, tlib
+Install: See http://github.com/tomtom/vimtlib/blob/master/INSTALL.TXT
+See http://github.com/tomtom for related plugins.
+
