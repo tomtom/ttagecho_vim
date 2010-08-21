@@ -21,8 +21,8 @@ formatted information.
 
 Status:  Works for me (there may be some minor quirks)
 Dependencies:
-  [hookcursormoved](http://github.com/tomtom/hookcursormoved_vim) :: git://github.com/tomtom/hookcursormoved_vim.git
-  [tlib](http://github.com/tomtom/tlib_vim) :: git://github.com/tomtom/tlib_vim.git
+  {hookcursormoved}[http://github.com/tomtom/hookcursormoved_vim] :: git://github.com/tomtom/hookcursormoved_vim.git
+  {tlib}[http://github.com/tomtom/tlib_vim] :: git://github.com/tomtom/tlib_vim.git
 Install: See http://github.com/tomtom/vimtlib/blob/master/INSTALL.TXT
 See http://github.com/tomtom for related plugins.
 
