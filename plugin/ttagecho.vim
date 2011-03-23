@@ -3,21 +3,21 @@
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2007-10-28.
-" @Last Change: 2010-01-05.
-" @Revision:    0.5.140
+" @Last Change: 2011-03-23.
+" @Revision:    144
 " GetLatestVimScripts: 2055 0 ttagecho.vim
 
 if &cp || exists("loaded_ttagecho")
     finish
 endif
-if !exists('g:loaded_tlib') || g:loaded_tlib < 25
+if !exists('g:loaded_tlib') || g:loaded_tlib < 41
     runtime plugin/02tlib.vim
-    if !exists('g:loaded_tlib') || g:loaded_tlib < 25
-        echoerr 'tlib >= 0.25 is required'
+    if !exists('g:loaded_tlib') || g:loaded_tlib < 41
+        echoerr 'tlib >= 0.41 is required'
         finish
     endif
 endif
-let loaded_ttagecho = 6
+let loaded_ttagecho = 7
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -61,8 +61,7 @@ augroup TTagecho
         endfor
         if has('balloon_eval')
             for s:pattern in g:ttagecho_balloon_patterns
-                exec 'autocmd BufNewFile,BufReadPost,FileType '. s:pattern .' if &bexpr != "ttagecho#Balloon()" | let b:ttagecho_bexpr = &bexpr | endif'
-                exec 'autocmd BufNewFile,BufReadPost,FileType '. s:pattern .' setlocal ballooneval bexpr=ttagecho#Balloon()'
+                exec 'autocmd BufNewFile,BufReadPost,FileType '. s:pattern .' call tlib#balloon#Register("ttagecho#Balloon()")'
             endfor
         endif
         unlet s:pattern
