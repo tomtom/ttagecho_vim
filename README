@@ -1,5 +1,3 @@
-*ttagecho.txt*      Show current tag information (echo area or balloon)
-
 This plugin is similar to echofunc (vimscript #1735) to which it owes 
 much inspiration and two lines of code. It displays some information 
 about the tag under the cursor or mouse pointer either in the echo area 
