@@ -45,7 +45,7 @@ Contents~
         :TTagechoAll ...................... |:TTagechoAll|
         :TTagechoWord ..................... |:TTagechoWord|
         :TTagechoWords .................... |:TTagechoWords|
-        g:ttagecho_char_rx ................ |g:ttagecho_char_rx|
+        g:ttagecho#rx ..................... |g:ttagecho#rx|
         g:ttagecho_balloon_limit .......... |g:ttagecho_balloon_limit|
         g:ttagecho_tagwidth ............... |g:ttagecho_tagwidth|
         g:ttagecho_matchbeginning ......... |g:ttagecho_matchbeginning|
@@ -99,8 +99,8 @@ TTagechoWords[!]
 ========================================================================
 autoload/ttagecho.vim~
 
-                                                    *g:ttagecho_char_rx*
-g:ttagecho_char_rx             (default: {})
+                                                    *g:ttagecho#rx*
+g:ttagecho#rx                  (default: {...})
     Regexps to match keyword characters (in case you don't want to 
     change iskeyword.
 

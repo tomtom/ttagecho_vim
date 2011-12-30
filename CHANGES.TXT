@@ -1,0 +1,29 @@
+0.1
+- Initial release
+
+0.2
+- Customize display: g:ttagecho_tagwidth
+- g:ttagecho_matchbeginning
+- Check for has('balloon_eval')
+- Restore showmode only on InsertLeave events (not on CursorHold(I) events).
+
+0.3
+- Check only opening parentheses (require hookcursormoved 0.5)
+- Use [bg]:tlib_tags_extra if defined.
+- Require tlib >= 0.20
+- g:ttagecho_substitute became g:tlib_tag_substitute
+- Removed support for: [bg]:ttagecho_more_tags (use [bg]:tlib_tags_extra 
+instead)
+
+0.4
+- Adapt for hookcursormoved >= 0.7
+
+0.5
+- Make sure tlib is loaded even if it is installed in a different rtp-directory (thanks to ... sorry, cannot find the e-mail)
+- Use tlib#notify#TrimMessage() (thanks to Erik Falor)
+
+0.6
+- NEW: g:ttagecho_char_rx: custom keyword char regexp
+- Always use compact style when there is only one tag that matches and if many_lines < 0
+- Find the right keyword, when the current line contains more than one
+
