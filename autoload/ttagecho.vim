@@ -3,18 +3,18 @@
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2007-10-28.
-" @Last Change: 2010-01-05.
-" @Revision:    0.0.215
+" @Last Change: 2011-08-11.
+" @Revision:    0.0.239
 
 " call tlog#Log('Load: '. expand('<sfile>')) " vimtlib-sfile
 
 
-if !exists('g:ttagecho_char_rx')
+if !exists('g:ttagecho#rx')
     " Regexps to match keyword characters (in case you don't want to 
     " change iskeyword.
-    " :read: let g:ttagecho_char_rx = {} "{{{2
-    let g:ttagecho_char_rx = {
-                \ 'vim': '\(\w\|#\)',
+    " :read: let g:ttagecho#rx = {...} "{{{2
+    let g:ttagecho#rx = {
+                \ 'vim': {'char': '\(\w\|#\)', 'prefix': '\(\<s:\|<SID>\)\?'},
                 \ }
 endif
 
@@ -172,18 +172,19 @@ function! ttagecho#OverParanthesis(mode) "{{{3
         let scol = col('.') - 1
         call winrestview(view)
     endif
-    " TLogVAR scol
     let line = strpart(line, 0, scol)
-    let chrx = s:GetCharRx() .'\+$'
-    let text = matchstr(line, chrx)
+    let rx   = s:GetRx(bufnr('%'), -1)
+    let text = matchstr(line, rx)
     " TLogVAR char, chrx, text, line
-    if &showmode && a:mode == 'i' && g:ttagecho_restore_showmode != -1 && &cmdheight == 1
-        let g:ttagecho_restore_showmode = 1
-        " TLogVAR g:ttagecho_restore_showmode
-        set noshowmode
+    if !empty(text)
+        if &showmode && a:mode == 'i' && g:ttagecho_restore_showmode != -1 && &cmdheight == 1
+            let g:ttagecho_restore_showmode = 1
+            " TLogVAR g:ttagecho_restore_showmode
+            set noshowmode
+        endif
+        " TLogDBG 'Do the echo'
+        call ttagecho#Echo(s:WordRx(text), 0, 0)
     endif
-    " TLogDBG 'Do the echo'
-    call ttagecho#Echo(s:WordRx(text), 0, 0)
 endf
 
 
@@ -191,26 +192,36 @@ endf
 function! ttagecho#Balloon() "{{{3
     " TLogVAR v:beval_lnum, v:beval_col
     let line = getline(v:beval_lnum)
-    let chrx = s:GetCharRx()
-    let text = matchstr(line, chrx .'*\%'. v:beval_col .'c'. chrx .'*')
+    let rx   = s:GetRx(bufnr('%'), v:beval_col)
+    let text = matchstr(line, rx)
     " TLogVAR text
-    let balloon = ttagecho#Expr(s:WordRx(text), -eval(g:ttagecho_balloon_limit), 0, 1)
-    if !empty(balloon)
-        return balloon
-    elseif exists('b:ttagecho_bexpr') && !empty(b:ttagecho_bexpr)
-        return eval(b:ttagecho_bexpr)
-    else
+    if empty(text)
         return ''
+    else
+        let balloon = ttagecho#Expr(s:WordRx(text), -eval(g:ttagecho_balloon_limit), 0, 1)
+        if !empty(balloon)
+            return balloon
+        elseif exists('b:ttagecho_bexpr') && !empty(b:ttagecho_bexpr)
+            return eval(b:ttagecho_bexpr)
+        else
+            return ''
+        endif
     endif
 endf
 
 
-function! s:GetCharRx() "{{{3
-    let chrx = tlib#var#Get('ttagecho_char_rx', 'wb', '')
-    if empty(chrx)
-        let chrx = get(g:ttagecho_char_rx, 'vim', '\w')
+function! s:GetRx(bufnr, col) "{{{3
+    " TLogVAR a:bufnr, a:col
+    let rxdef = get(g:ttagecho#rx, getbufvar(bufnr('%'), '&filetype'), {})
+    let rxchar = tlib#var#Get('ttagecho_char_rx', 'wb', get(rxdef, 'char', '\w'))
+    let rxprefix = tlib#var#Get('ttagecho_prefix_rx', 'wb', get(rxdef, 'prefix', ''))
+    " TLogVAR rxdef, rxchar, rxprefix
+    if a:col >= 0
+        let rx = rxprefix . rxchar .'*\%'. a:col .'c'. rxchar .'*'
+    else
+        let rx = rxprefix . rxchar .'\+$'
     endif
-    " TLogVAR chrx
-    return chrx
+    " TLogVAR rxchar, rx
+    return rx
 endf
 
